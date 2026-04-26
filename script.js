@@ -264,6 +264,7 @@ const directionButton = document.querySelector("#directionButton");
 const keyboardEl = document.querySelector("#keyboard");
 const filledCountEl = document.querySelector("#filledCount");
 const timerButton = document.querySelector("#timerButton");
+const newPuzzleButton = document.querySelector("#newPuzzleButton");
 const toast = document.querySelector("#toast");
 const dateLabel = document.querySelector(".date-label");
 const puzzleTitle = document.querySelector(".puzzle-meta h2");
@@ -273,6 +274,8 @@ let direction = "across";
 let active = { row: 0, col: 0 };
 let paused = false;
 let seconds = 0;
+let timerInterval;
+let customPuzzleOffset = 0;
 let toastTimeout;
 let celebrationTimeout;
 
@@ -282,7 +285,7 @@ const entries = { across: [], down: [] };
 function buildDailyPuzzle(date) {
   const localMidnight = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   const dayNumber = Math.floor(localMidnight.getTime() / 86400000);
-  const seed = (dayNumber ^ 0x5eedc0de) >>> 0;
+  const seed = ((dayNumber + customPuzzleOffset * 9973) ^ 0x5eedc0de) >>> 0;
   const generated = generatePuzzle(seed);
   const [acrossTop, acrossMiddle, acrossBottom] = generated.across;
   const [downLeft, downMiddle, downRight] = generated.down;
@@ -382,6 +385,42 @@ function makePuzzleTitle(seed, top, middle, bottom) {
   const adjective = adjectives[seed % adjectives.length];
   const noun = nouns[(seed + top.charCodeAt(0) + middle.charCodeAt(2) + bottom.charCodeAt(4)) % nouns.length];
   return `${adjective} ${noun}`;
+}
+
+function resetPuzzleState() {
+  window.clearTimeout(celebrationTimeout);
+  document.querySelector(".celebration")?.remove();
+  boardEl.classList.remove("solved");
+  boardEl.replaceChildren();
+  acrossCluesEl.replaceChildren();
+  downCluesEl.replaceChildren();
+  cells.length = 0;
+  entries.across.length = 0;
+  entries.down.length = 0;
+  direction = "across";
+  active = { row: 0, col: 0 };
+  paused = false;
+  seconds = 0;
+  timerButton.textContent = "00:00";
+  timerButton.setAttribute("aria-label", "Pause timer");
+  activeClueText.textContent = "Tap a square to start.";
+}
+
+function renderPuzzle() {
+  numbers = numberGrid();
+  updatePuzzleMeta();
+  buildEntries();
+  makeBoard();
+  makeClues();
+  selectCell(0, 0, true);
+}
+
+function generateNewPuzzle() {
+  customPuzzleOffset += 1;
+  resetPuzzleState();
+  puzzle = buildDailyPuzzle(today);
+  renderPuzzle();
+  showToast("New puzzle generated.");
 }
 
 function updatePuzzleMeta() {
@@ -779,6 +818,8 @@ timerButton.addEventListener("click", () => {
   showToast(paused ? "Timer paused." : "Timer resumed.");
 });
 
+newPuzzleButton.addEventListener("click", generateNewPuzzle);
+
 document.addEventListener("keydown", (event) => {
   if (/^[a-z]$/i.test(event.key)) {
     enterLetter(event.key.toUpperCase());
@@ -823,15 +864,10 @@ function moveByArrow(key) {
 function initializePuzzle() {
   generatedPuzzlePool = buildGeneratedPuzzlePool();
   puzzle = buildDailyPuzzle(today);
-  numbers = numberGrid();
 
-  updatePuzzleMeta();
-  buildEntries();
-  makeBoard();
-  makeClues();
+  renderPuzzle();
   makeKeyboard();
-  selectCell(0, 0, true);
-  window.setInterval(tick, 1000);
+  timerInterval = window.setInterval(tick, 1000);
   finishLoading();
 }
 
