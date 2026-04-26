@@ -265,6 +265,7 @@ const keyboardEl = document.querySelector("#keyboard");
 const filledCountEl = document.querySelector("#filledCount");
 const timerButton = document.querySelector("#timerButton");
 const newPuzzleButton = document.querySelector("#newPuzzleButton");
+const puzzleStatusEl = document.querySelector("#puzzleStatus");
 const toast = document.querySelector("#toast");
 const dateLabel = document.querySelector(".date-label");
 const puzzleTitle = document.querySelector(".puzzle-meta h2");
@@ -275,18 +276,15 @@ let active = { row: 0, col: 0 };
 let paused = false;
 let seconds = 0;
 let timerInterval;
-let customPuzzleOffset = 0;
+let currentPuzzleIndex = 0;
 let toastTimeout;
 let celebrationTimeout;
 
 const cells = [];
 const entries = { across: [], down: [] };
 
-function buildDailyPuzzle(date) {
-  const localMidnight = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const dayNumber = Math.floor(localMidnight.getTime() / 86400000);
-  const seed = ((dayNumber + customPuzzleOffset * 9973) ^ 0x5eedc0de) >>> 0;
-  const generated = generatePuzzle(seed);
+function buildDailyPuzzle(date, puzzleIndex = currentPuzzleIndex) {
+  const generated = generatePuzzle(getDailyPuzzleSeed(date, puzzleIndex));
   const [acrossTop, acrossMiddle, acrossBottom] = generated.across;
   const [downLeft, downMiddle, downRight] = generated.down;
 
@@ -313,6 +311,34 @@ function buildDailyPuzzle(date) {
       },
     },
   };
+}
+
+function getDailyPuzzleSeed(date, puzzleIndex) {
+  const dayNumber = getLocalDayNumber(date);
+  const usedPoolIndexes = new Set();
+  let seed = 0;
+
+  for (let index = 0; index <= puzzleIndex; index += 1) {
+    seed = ((dayNumber + index * 9973) ^ 0x5eedc0de) >>> 0;
+    while (usedPoolIndexes.has(seed % generatedPuzzlePool.length)) {
+      seed = (seed + 1) >>> 0;
+    }
+    usedPoolIndexes.add(seed % generatedPuzzlePool.length);
+  }
+
+  return seed;
+}
+
+function getLocalDayNumber(date) {
+  const localMidnight = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  return Math.floor(localMidnight.getTime() / 86400000);
+}
+
+function getDateKey(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 function generatePuzzle(seed) {
@@ -409,6 +435,7 @@ function resetPuzzleState() {
 function renderPuzzle() {
   numbers = numberGrid();
   updatePuzzleMeta();
+  renderPuzzleStatus();
   buildEntries();
   makeBoard();
   makeClues();
@@ -416,11 +443,16 @@ function renderPuzzle() {
 }
 
 function generateNewPuzzle() {
-  customPuzzleOffset += 1;
+  currentPuzzleIndex = (currentPuzzleIndex + 1) % 5;
+  loadPuzzle(currentPuzzleIndex);
+  showToast(`Puzzle ${currentPuzzleIndex + 1} loaded.`);
+}
+
+function loadPuzzle(puzzleIndex) {
+  currentPuzzleIndex = puzzleIndex;
   resetPuzzleState();
-  puzzle = buildDailyPuzzle(today);
+  puzzle = buildDailyPuzzle(today, currentPuzzleIndex);
   renderPuzzle();
-  showToast("New puzzle generated.");
 }
 
 function updatePuzzleMeta() {
@@ -429,7 +461,64 @@ function updatePuzzleMeta() {
     month: "long",
     day: "numeric",
   });
-  puzzleTitle.textContent = puzzle.title;
+  puzzleTitle.textContent = `${puzzle.title} ${currentPuzzleIndex + 1}/5`;
+}
+
+function renderPuzzleStatus() {
+  puzzleStatusEl.replaceChildren();
+
+  for (let index = 0; index < 5; index += 1) {
+    const statusButton = document.createElement("button");
+    const completion = getCompletion(index);
+    statusButton.type = "button";
+    statusButton.className = "status-pill";
+    statusButton.classList.toggle("active", index === currentPuzzleIndex);
+    statusButton.classList.toggle("done", Boolean(completion));
+    statusButton.setAttribute(
+      "aria-label",
+      completion
+        ? `Puzzle ${index + 1}, solved in ${formatTime(completion.seconds)}`
+        : `Puzzle ${index + 1}, open`,
+    );
+    statusButton.innerHTML = `<span>${index + 1}</span><strong>${
+      completion ? formatTime(completion.seconds) : "Open"
+    }</strong>`;
+    statusButton.addEventListener("click", () => {
+      if (index === currentPuzzleIndex) return;
+      loadPuzzle(index);
+      showToast(`Puzzle ${index + 1} loaded.`);
+    });
+    puzzleStatusEl.append(statusButton);
+  }
+}
+
+function getCompletion(puzzleIndex = currentPuzzleIndex) {
+  const raw = window.localStorage.getItem(getCompletionKey(puzzleIndex));
+  if (!raw) return null;
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function saveCompletion() {
+  const existing = getCompletion();
+  const completion = {
+    seconds,
+    solvedAt: new Date().toISOString(),
+  };
+
+  if (!existing || seconds < existing.seconds) {
+    window.localStorage.setItem(getCompletionKey(), JSON.stringify(completion));
+  }
+
+  renderPuzzleStatus();
+}
+
+function getCompletionKey(puzzleIndex = currentPuzzleIndex) {
+  return `syd-puzzles:${getDateKey(today)}:puzzle-${puzzleIndex + 1}`;
 }
 
 function isOpen(row, col) {
@@ -715,6 +804,7 @@ function checkPuzzle(showSuccess = true) {
 function checkCompletion() {
   if (isPuzzleComplete() && checkPuzzle(false)) {
     paused = true;
+    saveCompletion();
     showToast(`Solved in ${formatTime(seconds)}. Nice work.`);
     celebrateSolve();
   }
@@ -792,6 +882,7 @@ document.querySelector("#checkButton").addEventListener("click", () => {
   updateBoard();
   if (checkPuzzle() && isPuzzleComplete()) {
     paused = true;
+    saveCompletion();
     showToast(`Solved in ${formatTime(seconds)}. Nice work.`);
     celebrateSolve();
   }
@@ -863,7 +954,7 @@ function moveByArrow(key) {
 
 function initializePuzzle() {
   generatedPuzzlePool = buildGeneratedPuzzlePool();
-  puzzle = buildDailyPuzzle(today);
+  puzzle = buildDailyPuzzle(today, currentPuzzleIndex);
 
   renderPuzzle();
   makeKeyboard();

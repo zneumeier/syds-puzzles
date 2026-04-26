@@ -210,9 +210,9 @@ main {
 }
 
 .puzzle-meta {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: flex-end;
-  justify-content: space-between;
   gap: 18px;
   padding: 12px;
   margin-bottom: 14px;
@@ -239,6 +239,52 @@ main {
   flex-direction: column;
   align-items: flex-end;
   gap: 3px;
+}
+
+.puzzle-status {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.status-pill {
+  display: grid;
+  min-width: 0;
+  min-height: 42px;
+  align-content: center;
+  gap: 1px;
+  padding: 5px 4px;
+  border: 1px solid rgba(17, 17, 17, 0.18);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.82);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  cursor: pointer;
+}
+
+.status-pill span {
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.status-pill strong {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-pill.active {
+  border-color: var(--ink);
+  background: var(--gold-soft);
+}
+
+.status-pill.done strong {
+  color: var(--blue-deep);
 }
 
 .board-wrap {
