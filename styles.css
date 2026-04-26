@@ -42,6 +42,76 @@ button {
 .app-shell {
   min-height: 100svh;
   padding: 0 0 152px;
+  opacity: 1;
+  transition: opacity 220ms ease;
+}
+
+body.is-loading .app-shell {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    linear-gradient(rgba(251, 251, 250, 0.44), rgba(251, 251, 250, 0.58)),
+    url("assets/corgi-background.png") center top / min(1180px, 180vw) auto fixed,
+    var(--paper);
+  opacity: 1;
+  transition:
+    opacity 220ms ease,
+    visibility 220ms ease;
+}
+
+body.is-ready .loading-screen {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.loading-content {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  width: min(100%, 320px);
+  padding: 28px 22px;
+  border: 1px solid rgba(17, 17, 17, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+  text-align: center;
+}
+
+.loading-brand {
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.loading-content p {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.08;
+}
+
+.spinner {
+  width: 46px;
+  height: 46px;
+  border: 5px solid rgba(17, 17, 17, 0.12);
+  border-top-color: var(--gold);
+  border-right-color: var(--blue);
+  border-radius: 50%;
+  animation: spin 720ms linear infinite;
 }
 
 .topbar {
@@ -181,6 +251,10 @@ main {
   background: var(--ink);
   box-shadow: var(--shadow);
   touch-action: manipulation;
+}
+
+.board.solved {
+  animation: solved-pop 720ms ease both;
 }
 
 .cell {
@@ -406,6 +480,86 @@ main {
 .toast.show {
   transform: translateY(0);
   opacity: 1;
+}
+
+.celebration {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.celebration span {
+  position: absolute;
+  top: -18px;
+  left: var(--x);
+  width: 9px;
+  height: 16px;
+  border-radius: 2px;
+  background: var(--color);
+  box-shadow: 0 0 0 1px rgba(17, 17, 17, 0.08);
+  animation: confetti-fall 2200ms cubic-bezier(0.16, 0.8, 0.28, 1) var(--delay) forwards;
+}
+
+.celebration span:nth-child(3n) {
+  width: 13px;
+  height: 8px;
+}
+
+.celebration span:nth-child(4n) {
+  border-radius: 50%;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translate3d(0, -24px, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate3d(0, 110vh, 0) rotate(var(--spin));
+    opacity: 0;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes solved-pop {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  38% {
+    transform: scale(1.025);
+    box-shadow: 0 18px 44px rgba(248, 213, 95, 0.42);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell,
+  .loading-screen {
+    transition: none;
+  }
+
+  .spinner,
+  .board.solved,
+  .celebration span {
+    animation: none;
+  }
+
+  .celebration {
+    display: none;
+  }
 }
 
 @media (min-width: 760px) {

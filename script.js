@@ -1,104 +1,260 @@
 const clueMap = {
   ABOUT: "Concerning.",
   AFTER: "Later than.",
+  ABOVE: "Higher than.",
+  ACORN: "Oak tree seed.",
+  ACTOR: "Stage performer.",
+  ADAPT: "Adjust to fit.",
+  ADMIT: "Confess or let in.",
+  ALARM: "Warning sound.",
+  ALBUM: "Collection of songs.",
+  ALERT: "Watchful and ready.",
+  ALIKE: "Similar.",
+  ALONE: "By oneself.",
+  AMBER: "Yellow-orange fossil resin.",
+  ANGEL: "Halo wearer.",
+  ANKLE: "Joint above the foot.",
+  APPLE: "Fruit in a pie.",
+  APRON: "Kitchen garment.",
+  ARENA: "Sports venue.",
+  ARGUE: "Disagree out loud.",
+  ARISE: "Get up.",
+  ASIDE: "Off to one side.",
+  AUDIO: "Sound, technically.",
+  AWAKE: "Not sleeping.",
   BASIL: "Fragrant herb in pesto.",
+  BASIC: "Simple and essential.",
+  BEACH: "Sandy place by the water.",
+  BERRY: "Small fruit in a summer bowl.",
   BLISS: "Perfect happiness.",
+  BLAZE: "Bright fire.",
+  BLEND: "Mix together.",
+  BLOCK: "Cube-shaped toy.",
+  BLOOM: "Flower opening.",
+  BRAIN: "Thinking organ.",
+  BRAND: "Company mark.",
   BRAVE: "Courageous.",
+  BREAD: "Bakery loaf.",
+  BRICK: "Wall-building block.",
+  BRIDE: "Wedding aisle walker.",
+  BRING: "Carry along.",
+  BROAD: "Wide.",
+  BROWN: "Color of chocolate.",
+  BRUSH: "Tool for hair or paint.",
+  CABIN: "Small rustic house.",
+  CABLE: "Cord for a device.",
+  CANOE: "Narrow paddled boat.",
   CANDY: "Sweet checkout-aisle treat.",
+  CAROL: "Holiday song.",
+  CARRY: "Hold while moving.",
+  CATCH: "Grab in midair.",
+  CHAIR: "Seat with a back.",
+  CHARM: "Delightful quality.",
   CHEER: "A shout of support.",
   CIDER: "Apple drink that can be mulled.",
+  CLEAN: "Not dirty.",
+  CLEAR: "Easy to understand.",
+  CLOCK: "Time teller.",
   CLOUD: "Fluffy thing in the sky.",
+  COAST: "Land beside the sea.",
+  COMET: "Icy visitor with a tail.",
   CORGI: "Short-legged royal favorite.",
+  COVER: "Put over the top.",
+  CRANE: "Long-necked bird or lifting machine.",
+  CREAM: "Rich dairy topping.",
+  CRISP: "Crunchy, as a chip.",
+  CROWN: "Royal headwear.",
   DAILY: "Happening every day.",
   DANCE: "Move to music.",
+  DELAY: "Hold up.",
+  DELTA: "River-mouth landform.",
+  DOUBT: "Feeling of uncertainty.",
+  DREAM: "Sleep story.",
+  DRINK: "Sip.",
+  EAGLE: "Large bird of prey.",
+  EAGER: "Very excited to begin.",
   EARTH: "Our home planet.",
+  ELBOW: "Arm bend.",
+  ENJOY: "Take pleasure in.",
+  ENTER: "Go in.",
+  EVENT: "Happening on a calendar.",
+  EVERY: "Each one.",
+  EXTRA: "More than needed.",
+  FAITH: "Deep trust.",
+  FANCY: "A bit elegant.",
+  FIELD: "Open grassy area.",
+  FINAL: "Last.",
+  FIRST: "Before all others.",
   FETCH: "Retrieve, as a thrown ball.",
+  FLAME: "Tongue of fire.",
+  FLOOR: "Room bottom.",
+  FOCUS: "Concentrate.",
+  FORCE: "Strength or power.",
+  FRAME: "Border for a picture.",
+  FRONT: "Opposite of back.",
+  FRESH: "New, not stale.",
+  FRUIT: "Apple or pear, for example.",
+  GIANT: "Huge.",
+  GHOST: "Spooky spirit.",
+  GLASS: "Window material.",
+  GLOVE: "Hand covering.",
+  GRACE: "Poise and elegance.",
+  GRAPE: "Tiny fruit in a bunch.",
+  GRASS: "Lawn cover.",
+  GRAIN: "Tiny cereal seed.",
+  GRAND: "Impressive.",
+  GRANT: "Give officially.",
+  GREAT: "Excellent.",
   GREEN: "Color of grass.",
+  GUIDE: "Person who shows the way.",
+  HABIT: "Regular behavior.",
+  HAPPY: "Feeling joyful.",
+  HEART: "Symbol of love.",
   HONEY: "Sweet bear snack.",
+  HOTEL: "Place to stay overnight.",
+  HOUSE: "Place to live.",
+  HUMAN: "Person.",
+  HUMOR: "Funny quality.",
   IDEAL: "Perfect.",
+  IMAGE: "Picture.",
+  IRATE: "Very angry.",
+  JELLY: "Toast spread.",
+  JOLLY: "Merry.",
+  JUICE: "Fruit drink.",
+  KNIFE: "Cutting tool.",
+  KNITS: "Makes with yarn.",
+  LABEL: "Tag with a name.",
   LARGE: "Big.",
+  LAUGH: "Sound of amusement.",
+  LAYER: "One thickness.",
+  LEARN: "Gain knowledge.",
   LEMON: "Yellow citrus fruit.",
+  LEVEL: "Flat or even.",
   LIGHT: "Not heavy.",
+  LUNCH: "Midday meal.",
   MAGIC: "Stage illusion stuff.",
+  MAJOR: "Important.",
   MANGO: "Tropical fruit with a pit.",
+  MARCH: "Walk in step.",
+  MATCH: "Game or equal partner.",
+  MERRY: "Cheerful.",
+  METAL: "Iron or gold, for example.",
+  MODEL: "Small version.",
+  MONEY: "Cash.",
+  MONTH: "Calendar page.",
+  MOTOR: "Engine.",
+  MOUSE: "Computer clicker.",
   MUSIC: "Something heard in a song.",
+  NIGHT: "Dark part of the day.",
+  NORTH: "Map direction.",
+  NOVEL: "Long work of fiction.",
+  NURSE: "Hospital caregiver.",
   OCEAN: "Vast body of salt water.",
+  OLIVE: "Tiny fruit in tapenade.",
+  OTHER: "Not this one.",
+  PAINT: "Color for walls.",
+  PANEL: "Flat section.",
+  PAPER: "Sheet for writing.",
+  PASTA: "Noodles, often with sauce.",
+  PEACH: "Fuzzy stone fruit.",
+  PEACE: "Calm, not conflict.",
+  PHONE: "Calling device.",
+  PILOT: "Plane flyer.",
+  PLAIN: "Simple; not fancy.",
+  PLANE: "Aircraft.",
+  PLANT: "Garden grower.",
+  POUND: "Unit of weight.",
+  POWER: "Energy or strength.",
+  PRESS: "Push firmly.",
+  PRINT: "Put words on paper.",
+  PRIDE: "Feeling of self-respect.",
+  QUEEN: "Female monarch.",
+  QUIET: "Not noisy.",
+  RADIO: "Broadcast receiver.",
   RAISE: "Lift up.",
+  RANCH: "Large farm.",
+  REACH: "Stretch toward.",
+  READY: "Prepared.",
+  RIGHT: "Correct.",
+  RIVER: "Natural flowing water.",
+  ROAST: "Cook in an oven.",
+  ROUND: "Shaped like a circle.",
   ROYAL: "Fit for a monarch.",
   SALAD: "Leafy lunch option.",
+  SCALE: "Weighing device.",
+  SCENE: "Part of a play.",
+  SCORE: "Game tally.",
+  SENSE: "Sight or smell, for example.",
+  SHARE: "Use together.",
+  SHEET: "Bed cover.",
+  SHELL: "Hard outer covering.",
   SHORE: "Land beside water.",
+  SHIFT: "Move slightly.",
+  SHINE: "Give off light.",
+  SKILL: "Learned ability.",
+  SLATE: "Gray roofing stone.",
+  SLICE: "Thin piece.",
+  SLEEP: "Rest with eyes closed.",
+  SMALL: "Little.",
+  SMART: "Clever.",
+  SMILE: "Friendly expression.",
+  SOLID: "Firm; not liquid.",
+  SOUND: "Something heard.",
+  SOUTH: "Opposite of north.",
+  SPACE: "Room or outer void.",
+  SPARK: "Tiny flash.",
+  SPICE: "Flavoring from the pantry.",
+  SPORT: "Athletic game.",
+  STAND: "Be upright.",
+  STARE: "Look fixedly.",
+  START: "Begin.",
+  STEAM: "Vapor from a kettle.",
+  STONE: "Small rock.",
   STORM: "Rough weather.",
+  STYLE: "Distinctive look.",
+  SUGAR: "Sweet crystals.",
   SUNNY: "Bright and cloudless.",
+  SWEAR: "Promise solemnly.",
+  SWEET: "Sugary.",
+  TABLE: "Dining furniture.",
+  TEACH: "Help someone learn.",
+  THANK: "Express gratitude.",
+  THEME: "Central subject.",
+  THEIR: "Belonging to them.",
+  THERE: "In that place.",
+  THING: "Object whose name is handy.",
+  THINK: "Use your mind.",
+  TIGER: "Striped big cat.",
+  TOAST: "Browned bread.",
+  TOWER: "Tall narrow structure.",
+  TRACE: "Faint mark.",
+  TRACK: "Path for runners.",
+  TRADE: "Exchange goods.",
   TRAIN: "Railway vehicle.",
+  TREAT: "Special snack.",
+  TRUCK: "Large road vehicle.",
+  TRUST: "Rely on.",
+  UNION: "Joining together.",
+  VALUE: "Worth.",
+  VIDEO: "Moving image.",
+  VISIT: "Go see someone.",
+  VOICE: "Sound from speaking.",
   WALKS: "Strolls.",
+  WATER: "Clear drink from the tap.",
+  WHEEL: "Round rolling part.",
+  WHICH: "What one?",
+  WOULD: "Word before 'you kindly.'",
+  WORLD: "The earth and its people.",
+  WRITE: "Put words on a page.",
   YOUNG: "Not old.",
+  ZESTY: "Full of lively flavor.",
 };
 
-const dailyPuzzleBank = [
-  {
-    title: "Royal Short Legs",
-    across: ["CORGI", "RAISE", "IDEAL"],
-    down: ["CORGI", "RAISE", "IDEAL"],
-  },
-  {
-    title: "Sky Moves",
-    across: ["CLOUD", "OCEAN", "DANCE"],
-    down: ["CLOUD", "OCEAN", "DANCE"],
-  },
-  {
-    title: "Small Bravery",
-    across: ["BRAVE", "AFTER", "EARTH"],
-    down: ["BRAVE", "AFTER", "EARTH"],
-  },
-  {
-    title: "Sweet Tune",
-    across: ["MUSIC", "SHORE", "CHEER"],
-    down: ["MUSIC", "SHORE", "CHEER"],
-  },
-  {
-    title: "Apple Crown",
-    across: ["CIDER", "DAILY", "ROYAL"],
-    down: ["CIDER", "DAILY", "ROYAL"],
-  },
-  {
-    title: "Tropical Weather",
-    across: ["STORM", "OCEAN", "MANGO"],
-    down: ["STORM", "OCEAN", "MANGO"],
-  },
-  {
-    title: "Kitchen Garden",
-    across: ["BASIL", "STORM", "LEMON"],
-    down: ["BASIL", "STORM", "LEMON"],
-  },
-  {
-    title: "Sweet Spell",
-    across: ["MAGIC", "GREEN", "CANDY"],
-    down: ["MAGIC", "GREEN", "CANDY"],
-  },
-  {
-    title: "Good Dog",
-    across: ["FETCH", "TRAIN", "HONEY"],
-    down: ["FETCH", "TRAIN", "HONEY"],
-  },
-  {
-    title: "Bright Stroll",
-    across: ["WALKS", "LEMON", "SUNNY"],
-    down: ["WALKS", "LEMON", "SUNNY"],
-  },
-  {
-    title: "Light Lunch",
-    across: ["BLISS", "IDEAL", "SALAD"],
-    down: ["BLISS", "IDEAL", "SALAD"],
-  },
-  {
-    title: "Golden Hour",
-    across: ["ROYAL", "YOUNG", "LIGHT"],
-    down: ["ROYAL", "YOUNG", "LIGHT"],
-  },
-];
+const puzzleWords = Object.keys(clueMap).filter((word) => word.length === 5);
+let generatedPuzzlePool = [];
 
 const today = new Date();
-const puzzle = buildDailyPuzzle(today);
+let puzzle;
 
 const boardEl = document.querySelector("#board");
 const acrossCluesEl = document.querySelector("#acrossClues");
@@ -111,12 +267,14 @@ const timerButton = document.querySelector("#timerButton");
 const toast = document.querySelector("#toast");
 const dateLabel = document.querySelector(".date-label");
 const puzzleTitle = document.querySelector(".puzzle-meta h2");
+const loadingScreen = document.querySelector("#loadingScreen");
 
 let direction = "across";
 let active = { row: 0, col: 0 };
 let paused = false;
 let seconds = 0;
 let toastTimeout;
+let celebrationTimeout;
 
 const cells = [];
 const entries = { across: [], down: [] };
@@ -124,13 +282,14 @@ const entries = { across: [], down: [] };
 function buildDailyPuzzle(date) {
   const localMidnight = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   const dayNumber = Math.floor(localMidnight.getTime() / 86400000);
-  const daily = dailyPuzzleBank[dayNumber % dailyPuzzleBank.length];
-  const [acrossTop, acrossMiddle, acrossBottom] = daily.across;
-  const [downLeft, downMiddle, downRight] = daily.down;
+  const seed = (dayNumber ^ 0x5eedc0de) >>> 0;
+  const generated = generatePuzzle(seed);
+  const [acrossTop, acrossMiddle, acrossBottom] = generated.across;
+  const [downLeft, downMiddle, downRight] = generated.down;
 
   return {
     size: 5,
-    title: daily.title,
+    title: generated.title,
     rows: [
       acrossTop.split(""),
       [downLeft[1], null, downMiddle[1], null, downRight[1]],
@@ -151,6 +310,78 @@ function buildDailyPuzzle(date) {
       },
     },
   };
+}
+
+function generatePuzzle(seed) {
+  const poolIndex = seed % generatedPuzzlePool.length;
+  const generated = generatedPuzzlePool[poolIndex];
+  const [top, middle, bottom] = generated.across;
+
+  return {
+    ...generated,
+    title: makePuzzleTitle(seed, top, middle, bottom),
+  };
+}
+
+function buildGeneratedPuzzlePool() {
+  const signatureIndex = puzzleWords.reduce((index, word) => {
+    const signature = `${word[0]}${word[2]}${word[4]}`;
+    index[signature] ||= [];
+    index[signature].push(word);
+    return index;
+  }, {});
+  const pool = [];
+
+  for (const left of puzzleWords) {
+    for (const center of puzzleWords) {
+      for (const right of puzzleWords) {
+        const topOptions = signatureIndex[`${left[0]}${center[0]}${right[0]}`] || [];
+        const middleOptions = signatureIndex[`${left[2]}${center[2]}${right[2]}`] || [];
+        const bottomOptions = signatureIndex[`${left[4]}${center[4]}${right[4]}`] || [];
+
+        for (const top of topOptions) {
+          for (const middle of middleOptions) {
+            for (const bottom of bottomOptions) {
+              if (new Set([top, middle, bottom, left, center, right]).size < 6) continue;
+
+              pool.push({
+                across: [top, middle, bottom],
+                down: [left, center, right],
+              });
+            }
+          }
+        }
+      }
+    }
+  }
+
+  const uniquePool = [];
+  const seen = new Set();
+
+  for (const puzzle of pool) {
+    const key = [...puzzle.across, ...puzzle.down].join("-");
+    if (!seen.has(key)) {
+      seen.add(key);
+      uniquePool.push(puzzle);
+    }
+  }
+
+  return uniquePool.length
+    ? uniquePool
+    : [
+        {
+          across: ["CORGI", "RAISE", "IDEAL"],
+          down: ["CORGI", "RAISE", "IDEAL"],
+        },
+      ];
+}
+
+function makePuzzleTitle(seed, top, middle, bottom) {
+  const adjectives = ["Bright", "Tiny", "Cozy", "Quick", "Sunny", "Clever", "Fresh", "Happy"];
+  const nouns = ["Mini", "Break", "Grid", "Sprint", "Nibble", "Wag", "Spark", "Treat"];
+  const adjective = adjectives[seed % adjectives.length];
+  const noun = nouns[(seed + top.charCodeAt(0) + middle.charCodeAt(2) + bottom.charCodeAt(4)) % nouns.length];
+  return `${adjective} ${noun}`;
 }
 
 function updatePuzzleMeta() {
@@ -193,7 +424,7 @@ function numberGrid() {
   return numbers;
 }
 
-const numbers = numberGrid();
+let numbers;
 
 function buildEntries() {
   for (let row = 0; row < puzzle.size; row += 1) {
@@ -443,13 +674,45 @@ function checkPuzzle(showSuccess = true) {
 }
 
 function checkCompletion() {
-  const openSquares = puzzle.rows.flat().filter(Boolean).length;
-  const filled = document.querySelectorAll(".cell[data-value]").length;
-
-  if (filled === openSquares && checkPuzzle(false)) {
+  if (isPuzzleComplete() && checkPuzzle(false)) {
     paused = true;
     showToast(`Solved in ${formatTime(seconds)}. Nice work.`);
+    celebrateSolve();
   }
+}
+
+function isPuzzleComplete() {
+  const openSquares = puzzle.rows.flat().filter(Boolean).length;
+  const filled = document.querySelectorAll(".cell[data-value]").length;
+  return filled === openSquares;
+}
+
+function celebrateSolve() {
+  window.clearTimeout(celebrationTimeout);
+  document.querySelector(".celebration")?.remove();
+  boardEl.classList.remove("solved");
+
+  const celebration = document.createElement("div");
+  celebration.className = "celebration";
+  celebration.setAttribute("aria-hidden", "true");
+
+  const colors = ["#f8d55f", "#8fc7ff", "#ef8c8c", "#72c28f", "#ffffff"];
+  for (let index = 0; index < 42; index += 1) {
+    const piece = document.createElement("span");
+    piece.style.setProperty("--x", `${Math.random() * 100}vw`);
+    piece.style.setProperty("--delay", `${Math.random() * 0.35}s`);
+    piece.style.setProperty("--spin", `${Math.random() * 540 - 270}deg`);
+    piece.style.setProperty("--color", colors[index % colors.length]);
+    celebration.append(piece);
+  }
+
+  document.body.append(celebration);
+  requestAnimationFrame(() => boardEl.classList.add("solved"));
+
+  celebrationTimeout = window.setTimeout(() => {
+    celebration.remove();
+    boardEl.classList.remove("solved");
+  }, 2800);
 }
 
 function updateFilledCount() {
@@ -488,7 +751,11 @@ document.querySelector("#directionButton").addEventListener("click", () => {
 
 document.querySelector("#checkButton").addEventListener("click", () => {
   updateBoard();
-  checkPuzzle();
+  if (checkPuzzle() && isPuzzleComplete()) {
+    paused = true;
+    showToast(`Solved in ${formatTime(seconds)}. Nice work.`);
+    celebrateSolve();
+  }
 });
 
 document.querySelector("#clearButton").addEventListener("click", () => {
@@ -553,10 +820,28 @@ function moveByArrow(key) {
   }
 }
 
-updatePuzzleMeta();
-buildEntries();
-makeBoard();
-makeClues();
-makeKeyboard();
-selectCell(0, 0, true);
-window.setInterval(tick, 1000);
+function initializePuzzle() {
+  generatedPuzzlePool = buildGeneratedPuzzlePool();
+  puzzle = buildDailyPuzzle(today);
+  numbers = numberGrid();
+
+  updatePuzzleMeta();
+  buildEntries();
+  makeBoard();
+  makeClues();
+  makeKeyboard();
+  selectCell(0, 0, true);
+  window.setInterval(tick, 1000);
+  finishLoading();
+}
+
+function finishLoading() {
+  document.body.classList.remove("is-loading");
+  document.body.classList.add("is-ready");
+  loadingScreen?.setAttribute("aria-hidden", "true");
+  window.setTimeout(() => loadingScreen?.remove(), 360);
+}
+
+requestAnimationFrame(() => {
+  window.setTimeout(initializePuzzle, 80);
+});
