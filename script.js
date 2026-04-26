@@ -440,15 +440,17 @@ function renderPuzzle() {
   makeBoard();
   makeClues();
   selectCell(0, 0, true);
+  restoreSavedProgress();
 }
 
 function generateNewPuzzle() {
-  currentPuzzleIndex = (currentPuzzleIndex + 1) % 5;
-  loadPuzzle(currentPuzzleIndex);
+  const nextPuzzleIndex = (currentPuzzleIndex + 1) % 5;
+  loadPuzzle(nextPuzzleIndex);
   showToast(`Puzzle ${currentPuzzleIndex + 1} loaded.`);
 }
 
 function loadPuzzle(puzzleIndex) {
+  saveProgress();
   currentPuzzleIndex = puzzleIndex;
   resetPuzzleState();
   puzzle = buildDailyPuzzle(today, currentPuzzleIndex);
@@ -514,11 +516,104 @@ function saveCompletion() {
     window.localStorage.setItem(getCompletionKey(), JSON.stringify(completion));
   }
 
+  saveProgress(true);
   renderPuzzleStatus();
 }
 
 function getCompletionKey(puzzleIndex = currentPuzzleIndex) {
   return `syd-puzzles:${getDateKey(today)}:puzzle-${puzzleIndex + 1}`;
+}
+
+function getProgress(puzzleIndex = currentPuzzleIndex) {
+  const raw = window.localStorage.getItem(getProgressKey(puzzleIndex));
+  if (!raw) return null;
+
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function saveProgress(forceCompleted = false) {
+  if (!puzzle || !cells.length) return;
+
+  const completion = getCompletion();
+  const completed = forceCompleted || Boolean(completion);
+  const progress = {
+    seconds: completed && completion ? completion.seconds : seconds,
+    completed,
+    values: completed ? getSolutionValues() : getCurrentValues(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  window.localStorage.setItem(getProgressKey(), JSON.stringify(progress));
+}
+
+function restoreSavedProgress() {
+  const completion = getCompletion();
+  const progress = getProgress();
+  const values = completion ? getSolutionValues() : progress?.values;
+
+  seconds = completion?.seconds ?? progress?.seconds ?? 0;
+  paused = Boolean(completion);
+  timerButton.textContent = formatTime(seconds);
+  timerButton.setAttribute("aria-label", paused ? "Resume timer" : "Pause timer");
+
+  if (values) {
+    applyValues(values);
+  }
+
+  updateBoard();
+}
+
+function getProgressKey(puzzleIndex = currentPuzzleIndex) {
+  return `syd-puzzles:${getDateKey(today)}:puzzle-${puzzleIndex + 1}:progress`;
+}
+
+function getCurrentValues() {
+  const values = {};
+
+  for (let row = 0; row < puzzle.size; row += 1) {
+    for (let col = 0; col < puzzle.size; col += 1) {
+      if (!isOpen(row, col)) continue;
+      const value = cells[row][col].dataset.value;
+      if (value) values[`${row}-${col}`] = value;
+    }
+  }
+
+  return values;
+}
+
+function getSolutionValues() {
+  const values = {};
+
+  for (let row = 0; row < puzzle.size; row += 1) {
+    for (let col = 0; col < puzzle.size; col += 1) {
+      if (isOpen(row, col)) values[`${row}-${col}`] = puzzle.rows[row][col];
+    }
+  }
+
+  return values;
+}
+
+function applyValues(values) {
+  for (let row = 0; row < puzzle.size; row += 1) {
+    for (let col = 0; col < puzzle.size; col += 1) {
+      if (!isOpen(row, col)) continue;
+      const cell = cells[row][col];
+      const value = values[`${row}-${col}`];
+      cell.textContent = "";
+      delete cell.dataset.value;
+
+      if (value) {
+        cell.dataset.value = value;
+        cell.textContent = value;
+      }
+
+      restoreNumber(cell, row, col);
+    }
+  }
 }
 
 function isOpen(row, col) {
@@ -726,6 +821,7 @@ function enterLetter(letter) {
   moveWithinEntry(1);
   updateBoard();
   checkCompletion();
+  saveProgress();
 }
 
 function eraseLetter() {
@@ -742,6 +838,7 @@ function eraseLetter() {
     restoreNumber(previous, active.row, active.col);
   }
   updateBoard();
+  saveProgress();
 }
 
 function restoreNumber(cell, row, col) {
@@ -867,6 +964,7 @@ function tick() {
   if (!paused) {
     seconds += 1;
     timerButton.textContent = formatTime(seconds);
+    saveProgress();
   }
 }
 
@@ -889,12 +987,20 @@ document.querySelector("#checkButton").addEventListener("click", () => {
 });
 
 document.querySelector("#clearButton").addEventListener("click", () => {
+  if (getCompletion()) {
+    applyValues(getSolutionValues());
+    updateBoard();
+    showToast("This puzzle is already solved.");
+    return;
+  }
+
   document.querySelectorAll(".cell[data-value]").forEach((cell) => {
     delete cell.dataset.value;
     cell.textContent = "";
     restoreNumber(cell, Number(cell.dataset.row), Number(cell.dataset.col));
   });
   updateBoard();
+  saveProgress();
   showToast("Puzzle cleared.");
 });
 
@@ -904,10 +1010,17 @@ document.querySelector("#revealButton").addEventListener("click", () => {
 });
 
 timerButton.addEventListener("click", () => {
+  if (getCompletion()) {
+    showToast(`Solved in ${formatTime(seconds)}.`);
+    return;
+  }
   paused = !paused;
   timerButton.setAttribute("aria-label", paused ? "Resume timer" : "Pause timer");
+  saveProgress();
   showToast(paused ? "Timer paused." : "Timer resumed.");
 });
+
+window.addEventListener("beforeunload", saveProgress);
 
 newPuzzleButton.addEventListener("click", generateNewPuzzle);
 
