@@ -1,0 +1,459 @@
+:root {
+  color-scheme: light;
+  --ink: #111111;
+  --muted: #646464;
+  --line: #d5d5d5;
+  --paper: #fbfbfa;
+  --surface: #ffffff;
+  --square: #ffffff;
+  --block: #151515;
+  --gold: #f8d55f;
+  --gold-soft: #fff3be;
+  --blue: #8fc7ff;
+  --blue-deep: #1769aa;
+  --wrong: #ef8c8c;
+  --shadow: 0 12px 34px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background:
+    linear-gradient(rgba(251, 251, 250, 0.72), rgba(251, 251, 250, 0.78)),
+    url("assets/corgi-background.png") center top / min(1180px, 180vw) auto fixed,
+    var(--paper);
+  color: var(--ink);
+  font-family:
+    ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+button {
+  appearance: none;
+  -webkit-appearance: none;
+  color: inherit;
+  font: inherit;
+}
+
+.app-shell {
+  min-height: 100svh;
+  padding: 0 0 152px;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: 48px 1fr 76px;
+  align-items: center;
+  gap: 8px;
+  min-height: 64px;
+  padding: 8px 14px;
+  background: rgba(251, 251, 250, 0.94);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(16px);
+}
+
+.icon-button,
+.timer,
+.direction-button,
+.toolbar button,
+.key {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.icon-button {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  border-radius: 50%;
+}
+
+.icon-button span {
+  width: 17px;
+  height: 2px;
+  background: var(--ink);
+}
+
+.brand-lockup {
+  min-width: 0;
+  text-align: center;
+}
+
+.brand-lockup p,
+.date-label,
+.stats,
+.clue-column li {
+  margin: 0;
+  color: var(--muted);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.brand-lockup p {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.brand-lockup h1 {
+  margin: 0;
+  overflow: hidden;
+  font-size: 21px;
+  line-height: 1.05;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timer {
+  height: 38px;
+  border-radius: 999px;
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+main {
+  width: min(100%, 860px);
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.puzzle-meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px;
+  margin-bottom: 14px;
+  border: 1px solid rgba(17, 17, 17, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(10px);
+}
+
+.date-label,
+.stats {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.puzzle-meta h2 {
+  margin: 2px 0 0;
+  font-size: 28px;
+  line-height: 1.05;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.board-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.board {
+  display: grid;
+  width: min(100%, 520px);
+  aspect-ratio: 1;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  box-shadow: var(--shadow);
+  touch-action: manipulation;
+}
+
+.cell {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  place-items: center;
+  border: 1px solid var(--ink);
+  background: var(--square);
+  background-color: var(--square);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: clamp(24px, 10vw, 58px);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.cell.block {
+  background: var(--block);
+  background-color: var(--block);
+}
+
+.cell.highlighted {
+  background: var(--gold-soft);
+}
+
+.cell.active {
+  background: var(--gold);
+  outline: 3px solid var(--ink);
+  outline-offset: -3px;
+}
+
+.cell.related {
+  background: var(--blue);
+}
+
+.cell.wrong {
+  background: var(--wrong);
+}
+
+.number {
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  color: var(--ink);
+  font-size: clamp(9px, 2.5vw, 13px);
+  font-weight: 800;
+}
+
+.active-clue {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  align-items: stretch;
+  margin-top: 14px;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.direction-button {
+  border: 0;
+  border-right: 1px solid var(--ink);
+  border-radius: 0;
+  background: var(--gold);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.active-clue p {
+  min-height: 52px;
+  margin: 0;
+  padding: 12px 14px;
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+
+.toolbar button {
+  min-height: 42px;
+  border-radius: 6px;
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.clues {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.clue-column h3 {
+  margin: 0 0 8px;
+  padding-bottom: 5px;
+  border-bottom: 2px solid var(--ink);
+  font-size: 20px;
+}
+
+.clue-column ol {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.clue-column li {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 8px;
+  padding: 8px 6px;
+  border-radius: 6px;
+  font-size: 15px;
+  line-height: 1.25;
+}
+
+.clue-column li.active {
+  background: var(--gold-soft);
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.clue-number {
+  color: var(--ink);
+  font-weight: 900;
+  text-align: right;
+}
+
+.keyboard {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  display: grid;
+  gap: 6px;
+  padding: 8px 8px max(8px, env(safe-area-inset-bottom));
+  background: rgba(234, 235, 238, 0.96);
+  border-top: 1px solid #c6c8ce;
+  backdrop-filter: blur(14px);
+}
+
+.key-row {
+  display: grid;
+  gap: 5px;
+}
+
+.key-row:nth-child(1) {
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.key-row:nth-child(2) {
+  grid-template-columns: repeat(9, 1fr);
+  padding: 0 5%;
+}
+
+.key-row:nth-child(3) {
+  grid-template-columns: 1.45fr repeat(7, 1fr) 1.45fr;
+}
+
+.key {
+  display: grid;
+  min-width: 0;
+  min-height: 42px;
+  place-items: center;
+  border: 0;
+  border-radius: 5px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.28);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.key.utility {
+  background: #c8ccd4;
+  font-size: 13px;
+}
+
+.toast {
+  position: fixed;
+  right: 16px;
+  bottom: 156px;
+  left: 16px;
+  z-index: 20;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 12px 14px;
+  transform: translateY(20px);
+  border-radius: 8px;
+  background: var(--ink);
+  color: white;
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  opacity: 0;
+  pointer-events: none;
+  text-align: center;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+@media (min-width: 760px) {
+  .app-shell {
+    padding-bottom: 24px;
+  }
+
+  main {
+    display: grid;
+    grid-template-columns: minmax(360px, 520px) 1fr;
+    grid-template-areas:
+      "meta meta"
+      "board clue"
+      "active clue"
+      "tools clue";
+    gap: 0 24px;
+  }
+
+  .puzzle-meta {
+    grid-area: meta;
+  }
+
+  .board-wrap {
+    grid-area: board;
+  }
+
+  .active-clue {
+    grid-area: active;
+  }
+
+  .toolbar {
+    grid-area: tools;
+  }
+
+  .clues {
+    grid-area: clue;
+    align-content: start;
+  }
+
+  .keyboard {
+    position: static;
+    width: min(100%, 860px);
+    margin: 0 auto 24px;
+    border: 1px solid #c6c8ce;
+    border-radius: 8px;
+  }
+
+  .toast {
+    bottom: 24px;
+  }
+}

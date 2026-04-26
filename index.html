@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Syd's Puzzles</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <button class="icon-button" id="menuButton" aria-label="Open menu" title="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="brand-lockup">
+          <p>Syd's Puzzles</p>
+          <h1>Mini Crossword</h1>
+        </div>
+        <button class="timer" id="timerButton" aria-label="Pause timer" title="Pause timer">00:00</button>
+      </header>
+
+      <main>
+        <section class="puzzle-meta" aria-label="Puzzle information">
+          <div>
+            <p class="date-label">Sunday, April 26</p>
+            <h2>Sunday Sprint</h2>
+          </div>
+          <div class="stats">
+            <span id="filledCount">0/25</span>
+            <span>5x5</span>
+          </div>
+        </section>
+
+        <section class="board-wrap" aria-label="Crossword board">
+          <div class="board" id="board" role="grid" aria-label="Syd's Puzzles crossword grid"></div>
+        </section>
+
+        <section class="active-clue" aria-live="polite">
+          <button class="direction-button" id="directionButton" type="button">Across</button>
+          <p id="activeClueText">Tap a square to start.</p>
+        </section>
+
+        <section class="toolbar" aria-label="Puzzle tools">
+          <button type="button" id="revealButton" title="Reveal selected letter">Reveal</button>
+          <button type="button" id="checkButton" title="Check puzzle">Check</button>
+          <button type="button" id="clearButton" title="Clear puzzle">Clear</button>
+        </section>
+
+        <section class="clues" aria-label="Clues">
+          <div class="clue-column">
+            <h3>Across</h3>
+            <ol id="acrossClues"></ol>
+          </div>
+          <div class="clue-column">
+            <h3>Down</h3>
+            <ol id="downClues"></ol>
+          </div>
+        </section>
+      </main>
+
+      <div class="keyboard" id="keyboard" aria-label="Keyboard"></div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
